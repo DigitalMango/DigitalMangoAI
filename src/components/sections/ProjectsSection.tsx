@@ -45,12 +45,276 @@ const projects = [
   },
 ]
 
+function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+  const projectRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: projectRef,
+    offset: ["start end", "end start"],
+  })
+
+  const containerY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [300, 0, 0, -300])
+  const containerScale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6])
+  const containerOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
+
+  const imageY = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [200, 0, 0, -200])
+  const imageScale = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.5, 1, 1, 0.5])
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
+
+  const textY = useTransform(scrollYProgress, [0, 0.5, 0.5, 1], [150, 0, 0, -150])
+  const textOpacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0, 1, 1, 0])
+
+  return (
+    <div
+      ref={projectRef}
+      className="container mx-auto px-6"
+    >
+      <motion.div
+        className={`flex flex-col ${index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"} items-center gap-12 lg:gap-20`}
+        style={{
+          y: containerY,
+          scale: containerScale,
+          opacity: containerOpacity
+        }}
+      >
+        {/* Project Image with Stagger Animation */}
+        <motion.div
+          className="flex-1 relative group"
+          style={{
+            y: imageY,
+            scale: imageScale,
+            opacity: imageOpacity
+          }}
+        >
+          <motion.div
+            className="relative"
+            whileHover={{
+              scale: 1.05,
+              rotateY: 5,
+              rotateX: 5,
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm overflow-hidden group-hover:border-orange-500/50 transition-all duration-500 shadow-2xl">
+              <CardContent className="p-0">
+                <div className="relative overflow-hidden">
+                  <motion.img
+                    src={project.image}
+                    alt={project.name}
+                    className="w-full h-80 object-cover"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  {/* Gradient Overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-30 group-hover:opacity-50 transition-opacity duration-500`} />
+                  {/* Animated Border */}
+                  <motion.div
+                    className="absolute inset-0 border-2 border-transparent rounded-lg"
+                    animate={{
+                      borderColor: ["transparent", project.gradient.split(" ")[1], "transparent"],
+                    }}
+                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                  />
+                  {/* Overlay */}
+                  <motion.div
+                    className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    whileHover={{ opacity: 1 }}
+                  >
+                    <div className="flex gap-4">
+                      <motion.div
+                        whileHover={{ scale: 1.1, y: -5 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button
+                          size="sm"
+                          className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-0"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Demo en Vivo
+                        </Button>
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.1, y: -5 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-white/30 text-white hover:bg-white/10 bg-black/20 backdrop-blur-sm"
+                        >
+                          <Github className="w-4 h-4 mr-2" />
+                          Código
+                        </Button>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
+        {/* Project Info with Stagger Animation */}
+        <motion.div
+          className="flex-1 space-y-6"
+          style={{
+            y: textY,
+            opacity: textOpacity
+          }}
+        >
+          {/* Title with Stagger Effect */}
+          <motion.div
+            initial={{ opacity: 0, y: 100, scale: 0.8 }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              scale: 1
+            }}
+            transition={{
+              duration: 0.8,
+              delay: 0.2,
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <motion.h3
+              className="text-3xl md:text-4xl font-bold mb-4 text-white"
+              animate={{
+                textShadow: [
+                  "0 0 20px rgba(255, 140, 66, 0.5)",
+                  "0 0 40px rgba(255, 140, 66, 0.8)",
+                  "0 0 20px rgba(255, 140, 66, 0.5)",
+                ],
+              }}
+              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+            >
+              {project.name}
+            </motion.h3>
+          </motion.div>
+          {/* Description with Stagger Effect */}
+          <motion.p
+            className="text-lg text-gray-400 mb-6 leading-relaxed"
+            initial={{ opacity: 0, y: 80, scale: 0.9 }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              scale: 1
+            }}
+            transition={{
+              duration: 0.8,
+              delay: 0.4,
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {project.description}
+          </motion.p>
+          {/* Tech Stack with Stagger Animation */}
+          <motion.div
+            className="flex flex-wrap gap-3 mb-8"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{
+              opacity: 1,
+              y: 0
+            }}
+            transition={{
+              duration: 0.8,
+              delay: 0.6,
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {project.tech.map((tech, techIndex) => (
+              <motion.span
+                key={tech}
+                className="px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full text-sm text-gray-300 backdrop-blur-sm relative overflow-hidden"
+                whileHover={{
+                  scale: 1.1,
+                  borderColor: "#FF8C42",
+                  boxShadow: "0 0 20px rgba(255, 140, 66, 0.3)",
+                }}
+                initial={{
+                  opacity: 0,
+                  scale: 0.5,
+                  y: 50,
+                  rotateX: -90
+                }}
+                whileInView={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  rotateX: 0
+                }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.8 + techIndex * 0.15,
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 20
+                }}
+                viewport={{ once: true, margin: "-100px" }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-yellow-500 opacity-0"
+                  whileHover={{ opacity: 0.1 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <span className="relative z-10">{tech}</span>
+              </motion.span>
+            ))}
+          </motion.div>
+          {/* Button with Stagger Effect */}
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              scale: 1
+            }}
+            transition={{
+              duration: 0.8,
+              delay: 1.2,
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative"
+            >
+              <Button className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white border-0 group relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+                  animate={{
+                    x: ["-100%", "100%"],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "linear",
+                  }}
+                />
+                <span className="relative z-10">Ver Caso de Estudio</span>
+                <motion.div
+                  className="ml-2 relative z-10"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </motion.div>
+              </Button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </div>
+  )
+}
+
 export default function ProjectsSection() {
   return (
     <section id="proyectos" className="relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950" />
-      
       {/* Floating Particles */}
       <div className="absolute inset-0">
         {[...Array(50)].map((_, i) => (
@@ -75,7 +339,6 @@ export default function ProjectsSection() {
           />
         ))}
       </div>
-
       <div className="relative z-10">
         {/* Section Header */}
         <div className="py-20">
@@ -87,9 +350,9 @@ export default function ProjectsSection() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <motion.h2 
+              <motion.h2
                 className="text-4xl md:text-6xl font-bold mb-6"
-                animate={{ 
+                animate={{
                   backgroundPosition: ["0%", "100%", "0%"],
                 }}
                 transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
@@ -108,282 +371,11 @@ export default function ProjectsSection() {
             </motion.div>
           </div>
         </div>
-
         {/* Projects Container */}
         <div className="space-y-32 pb-20">
-          {projects.map((project, index) => {
-            const projectRef = useRef<HTMLDivElement>(null)
-            const { scrollYProgress } = useScroll({
-              target: projectRef,
-              offset: ["start end", "end start"],
-            })
-
-            // Recapafteruse-style dramatic transforms
-            const containerY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [300, 0, 0, -300])
-            const containerScale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.6])
-            const containerOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-            
-            const imageY = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [200, 0, 0, -200])
-            const imageScale = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.5, 1, 1, 0.5])
-            const imageOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
-            
-            const textY = useTransform(scrollYProgress, [0, 0.5, 0.5, 1], [150, 0, 0, -150])
-            const textOpacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0, 1, 1, 0])
-
-            return (
-              <div
-                key={project.id}
-                ref={projectRef}
-                className="container mx-auto px-6"
-              >
-                <motion.div 
-                  className={`flex flex-col ${index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"} items-center gap-12 lg:gap-20`}
-                  style={{ 
-                    y: containerY,
-                    scale: containerScale,
-                    opacity: containerOpacity
-                  }}
-                >
-                  {/* Project Image with Stagger Animation */}
-                  <motion.div 
-                    className="flex-1 relative group"
-                    style={{ 
-                      y: imageY,
-                      scale: imageScale,
-                      opacity: imageOpacity
-                    }}
-                  >
-                    <motion.div
-                      className="relative"
-                      whileHover={{ 
-                        scale: 1.05,
-                        rotateY: 5,
-                        rotateX: 5,
-                      }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm overflow-hidden group-hover:border-orange-500/50 transition-all duration-500 shadow-2xl">
-                        <CardContent className="p-0">
-                          <div className="relative overflow-hidden">
-                            <motion.img
-                              src={project.image}
-                              alt={project.name}
-                              className="w-full h-80 object-cover"
-                              whileHover={{ scale: 1.1 }}
-                              transition={{ duration: 0.6 }}
-                            />
-                            
-                            {/* Gradient Overlay */}
-                            <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-30 group-hover:opacity-50 transition-opacity duration-500`} />
-                            
-                            {/* Animated Border */}
-                            <motion.div
-                              className="absolute inset-0 border-2 border-transparent rounded-lg"
-                              animate={{
-                                borderColor: ["transparent", project.gradient.split(" ")[1], "transparent"],
-                              }}
-                              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                            />
-
-                            {/* Overlay */}
-                            <motion.div
-                              className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              whileHover={{ opacity: 1 }}
-                            >
-                              <div className="flex gap-4">
-                                <motion.div
-                                  whileHover={{ scale: 1.1, y: -5 }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  <Button
-                                    size="sm"
-                                    className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-0"
-                                  >
-                                    <ExternalLink className="w-4 h-4 mr-2" />
-                                    Demo en Vivo
-                                  </Button>
-                                </motion.div>
-                                <motion.div
-                                  whileHover={{ scale: 1.1, y: -5 }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="border-white/30 text-white hover:bg-white/10 bg-black/20 backdrop-blur-sm"
-                                  >
-                                    <Github className="w-4 h-4 mr-2" />
-                                    Código
-                                  </Button>
-                                </motion.div>
-                              </div>
-                            </motion.div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  </motion.div>
-
-                  {/* Project Info with Stagger Animation */}
-                  <motion.div 
-                    className="flex-1 space-y-6"
-                    style={{ 
-                      y: textY,
-                      opacity: textOpacity
-                    }}
-                  >
-                    {/* Title with Stagger Effect */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 100, scale: 0.8 }}
-                      whileInView={{ 
-                        opacity: 1, 
-                        y: 0, 
-                        scale: 1 
-                      }}
-                      transition={{ 
-                        duration: 0.8, 
-                        delay: 0.2,
-                        ease: [0.25, 0.46, 0.45, 0.94]
-                      }}
-                      viewport={{ once: true, margin: "-100px" }}
-                    >
-                      <motion.h3 
-                        className="text-3xl md:text-4xl font-bold mb-4 text-white"
-                        animate={{
-                          textShadow: [
-                            "0 0 20px rgba(255, 140, 66, 0.5)",
-                            "0 0 40px rgba(255, 140, 66, 0.8)",
-                            "0 0 20px rgba(255, 140, 66, 0.5)",
-                          ],
-                        }}
-                        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                      >
-                        {project.name}
-                      </motion.h3>
-                    </motion.div>
-                    
-                    {/* Description with Stagger Effect */}
-                    <motion.p 
-                      className="text-lg text-gray-400 mb-6 leading-relaxed"
-                      initial={{ opacity: 0, y: 80, scale: 0.9 }}
-                      whileInView={{ 
-                        opacity: 1, 
-                        y: 0, 
-                        scale: 1 
-                      }}
-                      transition={{ 
-                        duration: 0.8, 
-                        delay: 0.4,
-                        ease: [0.25, 0.46, 0.45, 0.94]
-                      }}
-                      viewport={{ once: true, margin: "-100px" }}
-                    >
-                      {project.description}
-                    </motion.p>
-
-                    {/* Tech Stack with Stagger Animation */}
-                    <motion.div 
-                      className="flex flex-wrap gap-3 mb-8"
-                      initial={{ opacity: 0, y: 60 }}
-                      whileInView={{ 
-                        opacity: 1, 
-                        y: 0 
-                      }}
-                      transition={{ 
-                        duration: 0.8, 
-                        delay: 0.6,
-                        ease: [0.25, 0.46, 0.45, 0.94]
-                      }}
-                      viewport={{ once: true, margin: "-100px" }}
-                    >
-                      {project.tech.map((tech, techIndex) => (
-                        <motion.span
-                          key={tech}
-                          className="px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full text-sm text-gray-300 backdrop-blur-sm relative overflow-hidden"
-                          whileHover={{ 
-                            scale: 1.1, 
-                            borderColor: "#FF8C42",
-                            boxShadow: "0 0 20px rgba(255, 140, 66, 0.3)",
-                          }}
-                          initial={{ 
-                            opacity: 0, 
-                            scale: 0.5, 
-                            y: 50,
-                            rotateX: -90
-                          }}
-                          whileInView={{ 
-                            opacity: 1, 
-                            scale: 1, 
-                            y: 0,
-                            rotateX: 0
-                          }}
-                          transition={{ 
-                            duration: 0.6, 
-                            delay: 0.8 + techIndex * 0.15,
-                            type: "spring",
-                            stiffness: 200,
-                            damping: 20
-                          }}
-                          viewport={{ once: true, margin: "-100px" }}
-                        >
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-orange-500 to-yellow-500 opacity-0"
-                            whileHover={{ opacity: 0.1 }}
-                            transition={{ duration: 0.3 }}
-                          />
-                          <span className="relative z-10">{tech}</span>
-                        </motion.span>
-                      ))}
-                    </motion.div>
-
-                    {/* Button with Stagger Effect */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                      whileInView={{ 
-                        opacity: 1, 
-                        y: 0, 
-                        scale: 1 
-                      }}
-                      transition={{ 
-                        duration: 0.8, 
-                        delay: 1.2,
-                        ease: [0.25, 0.46, 0.45, 0.94]
-                      }}
-                      viewport={{ once: true, margin: "-100px" }}
-                    >
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="relative"
-                      >
-                        <Button className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white border-0 group relative overflow-hidden">
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
-                            animate={{
-                              x: ["-100%", "100%"],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              ease: "linear",
-                            }}
-                          />
-                          <span className="relative z-10">Ver Caso de Estudio</span>
-                          <motion.div
-                            className="ml-2 relative z-10"
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </motion.div>
-                        </Button>
-                      </motion.div>
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-              </div>
-            )
-          })}
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
         </div>
       </div>
     </section>

@@ -112,7 +112,7 @@ export default function TestimonialsSection() {
                         transition={{ duration: 0.6, delay: 0.3 }}
                         viewport={{ once: true }}
                       >
-                        "{testimonial.content}"
+                        {`“${testimonial.content.replace(/"/g, "&quot;") }”`}
                       </motion.p>
 
                       {/* Rating */}

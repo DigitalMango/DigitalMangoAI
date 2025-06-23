@@ -1,4 +1,6 @@
+
 {
+  "homepage": "https://DigitalMango.github.io/DigitalMangoAI",
   "name": "my-v0-project",
   "version": "0.1.0",
   "private": true,
@@ -6,7 +8,9 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
@@ -67,6 +71,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9.29.0",
     "eslint-config-next": "^15.3.4",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.5",
     "stylelint": "^16.21.0",
     "stylelint-config-standard": "^38.0.0",
