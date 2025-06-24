@@ -14,7 +14,7 @@ jobs:
         with:
           version: 8
       - run: pnpm install
-      - run: pnpm build && pnpm export
+      - run: pnpm build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
