@@ -41,25 +41,6 @@ export default function HeroSection() {
       </div>
 
       <motion.div className="relative z-10 text-center px-6 max-w-6xl mx-auto" style={{ y, opacity }}>
-        {/* Mango Logo Animation */}
-        <motion.div
-          className="mb-8 flex justify-center"
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ duration: 1, type: "spring", bounce: 0.5 }}
-        >
-          <div className="relative">
-            <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl flex items-center justify-center shadow-2xl">
-              <span className="text-3xl">🥭</span>
-            </div>
-            <motion.div
-              className="absolute -inset-2 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl opacity-20 blur-xl"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-            />
-          </div>
-        </motion.div>
-
         {/* Main Headline */}
         <motion.h1
           className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
@@ -68,7 +49,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-            Experiencias Web
+            Websites 
           </span>
           <br />
           <motion.span
@@ -76,7 +57,7 @@ export default function HeroSection() {
             animate={{ backgroundPosition: ["0%", "100%", "0%"] }}
             transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
           >
-            Reimaginadas
+            inteligentes.
           </motion.span>
         </motion.h1>
 
@@ -87,8 +68,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Sitios web impulsados por IA que cautivan, convierten y crean impresiones duraderas. Creamos experiencias digitales que
-          rompen fronteras.
+          Rompiendo códigos y expectativas: Websites que piensan.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -98,7 +78,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <Button
+          {/* <Button
             size="lg"
             className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white border-0 px-8 py-6 text-lg group"
           >
@@ -110,31 +90,21 @@ export default function HeroSection() {
             >
               <ArrowRight className="w-5 h-5" />
             </motion.div>
-          </Button>
+          </Button> */}
 
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white px-8 py-6 text-lg group bg-black/20 backdrop-blur-sm"
+          <motion.div
+            whileHover={{ y: -8, scale: 1.04 }}
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
           >
-            <Sparkles className="w-5 h-5 mr-2 group-hover:text-orange-500 transition-colors" />
-            Ver Nuestro Trabajo
-          </Button>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-        >
-          <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center">
-            <motion.div
-              className="w-1 h-3 bg-orange-500 rounded-full mt-2"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-            />
-          </div>
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white border-0 px-8 py-6 text-lg group"
+            >
+              <Sparkles className="w-5 h-5 mr-2 group-hover:text-white transition-colors" />
+              Ver Nuestro Trabajo
+            </Button>
+          </motion.div>
         </motion.div>
       </motion.div>
     </section>

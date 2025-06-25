@@ -178,20 +178,20 @@ export default function ContactSection() {
               {
                 icon: Mail,
                 title: "Envíanos un Email",
-                content: "hello@digitalmango.com",
+                content: "digitalmangosv@gmail.com",
                 description: "Escríbenos en cualquier momento",
               },
               {
                 icon: Phone,
                 title: "Llámanos",
-                content: "+1 (555) 123-4567",
-                description: "Lun-Vie de 8am a 5pm",
+                content: "+503 7755-5414",
+                description: "Lunes a Viernes de 8:00 AM a 7:00 PM",
               },
               {
                 icon: MapPin,
                 title: "Visítanos",
-                content: "123 Calle de la Innovación",
-                description: "San Francisco, CA 94102",
+                content: "Colonia San Benito, #355 Edificio",
+                description: "Pro-Office, San Salvador, El Salvador",
               },
             ].map((contact, index) => (
               <motion.div

@@ -110,7 +110,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         </motion.div>
         {/* Project Info with Stagger Animation */}
         <motion.div
-          className="flex-1 space-y-6"
+          className="flex-1 space-y-6 text-center"
           style={{
             y: textY,
             opacity: textOpacity
@@ -165,7 +165,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
           </motion.p>
           {/* Tech Stack with Stagger Animation */}
           <motion.div
-            className="flex flex-wrap gap-3 mb-8"
+            className="flex flex-wrap gap-3 mb-8 justify-center"
             initial={{ opacity: 0, y: 60 }}
             whileInView={{
               opacity: 1,
